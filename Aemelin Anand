@@ -1,0 +1,39 @@
+import json
+from datetime import datetime
+
+food_db = {
+    "apple": {"calories": 95, "protein": 0.5, "carbs": 25, "fat": 0.3},
+    "banana": {"calories": 105, "protein": 1.3, "carbs": 27, "fat": 0.3},
+    "egg": {"calories": 78, "protein": 6, "carbs": 0.6, "fat": 5}
+}
+
+daily_log = []
+
+def add_food(item):
+    if item in food_db:
+        daily_log.append(food_db[item])
+        print(f" Added {item}")
+    else:
+        print(f" {item} not found in database.")
+
+def show_summary():
+    total = {"calories": 0, "protein": 0, "carbs": 0, "fat": 0}
+    for entry in daily_log:
+        for key in total:
+            total[key] += entry[key]print("\n Daily Summary:")
+for key in total:
+    print(f"{key.capitalize()}: {total[key]:.2f}")
+
+def save_log():
+    date = datetime.now().strftime("%Y-%m-%d")
+    with open("nutrition_log.json", "a") as f:
+        json.dump({date: daily_log}, f)
+        f.write("\n")
+    print(" Log saved.")
+
+add_food("apple")
+add_food("egg")
+add_food("banana")
+
+show_summary()
+save_log()
